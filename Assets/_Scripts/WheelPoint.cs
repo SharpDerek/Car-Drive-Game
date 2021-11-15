@@ -16,6 +16,8 @@ public class WheelPoint : MonoBehaviour {
 
     [HideInInspector]
     public float steerAngle;
+    [HideInInspector]
+    public bool driveWheel = false;
 
     private float minLength;
     private float maxLength;
@@ -36,6 +38,8 @@ public class WheelPoint : MonoBehaviour {
     private float wheelRadius = 0.5f;
     [SerializeField]
     private float steerTime = 10;
+    [SerializeField]
+    private LayerMask collideLayers;
 
     private Rigidbody rb;
     private Wheel wheel;
@@ -55,7 +59,7 @@ public class WheelPoint : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, maxLength + wheelRadius)) {
+        if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, maxLength + wheelRadius, collideLayers, QueryTriggerInteraction.Ignore)) {
             if (!hit.transform.CompareTag("Player")) {
                 //Debug.Log(hit.transform.name + ", " + transform.name);
                 lastLength = springLength;
@@ -74,7 +78,13 @@ public class WheelPoint : MonoBehaviour {
 
                 suspensionForce = (springForce + damperForce) * transform.up;
 
-                rb.AddForceAtPosition(suspensionForce + (force.x * 1 * transform.forward) + (force.y * -transform.right), hit.point);
+                Vector3 positionForce = suspensionForce + (force.y * -transform.right);
+
+                if (driveWheel) {
+                    positionForce += (force.x * 1 * transform.forward);
+                }
+
+                rb.AddForceAtPosition(positionForce, hit.point);
             }
         }
         wheel.transform.localPosition = Vector3.down * springLength;

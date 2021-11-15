@@ -5,6 +5,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour {
 
+    public enum DriveType {
+        frontwheel,
+        rearwheel,
+        fourwheel
+    }
+
     [Header("Wheels")]
     [SerializeField]
     private WheelPoint frontLeftWheel;
@@ -20,6 +26,8 @@ public class PlayerMovement : MonoBehaviour {
     private float turnRadius = 10;
     [SerializeField]
     private float topSpeed = 160; //100mph
+    [SerializeField]
+    private DriveType driveType;
 
     private float steerInput;
     public float wheelbase;
@@ -34,6 +42,7 @@ public class PlayerMovement : MonoBehaviour {
     void Start() {
         rb = GetComponent<Rigidbody>();
         GetCarSpecs();
+        SetDriveWheels();
     }
 
     void GetCarSpecs() {
@@ -44,6 +53,20 @@ public class PlayerMovement : MonoBehaviour {
     void Update() {
         GetSteerDirection();
         DoSteering();
+    }
+
+    void SetDriveWheels() {
+        switch (driveType) {
+            case DriveType.frontwheel:
+                frontLeftWheel.driveWheel = frontRightWheel.driveWheel = true;
+                break;
+            case DriveType.rearwheel:
+                backLeftWheel.driveWheel = backRightWheel.driveWheel = true;
+                break;
+            case DriveType.fourwheel:
+                frontLeftWheel.driveWheel = frontRightWheel.driveWheel = backLeftWheel.driveWheel = backRightWheel.driveWheel = true;
+                break;
+        }
     }
 
     void GetSteerDirection() {
