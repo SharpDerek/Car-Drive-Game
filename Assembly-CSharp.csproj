@@ -36,10 +36,9 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\_Scripts\PlayerMovement.cs" />
-     <Compile Include="Assets\_Scripts\WheelPoint.cs" />
-     <Compile Include="Assets\_Scripts\Wheel.cs" />
+     <Compile Include="Assets\_Scripts\CarController.cs" />
      <Compile Include="Assets\_Scripts\BasicCameraFollow.cs" />
+     <Compile Include="Assets\_Scripts\Wheel.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:/Program Files/Unity/2020.3.7f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
